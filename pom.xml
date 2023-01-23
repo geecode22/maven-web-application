@@ -6,7 +6,7 @@
 	<artifactId>maven-web-application</artifactId>
 	<packaging>war</packaging>
 	
-	<version>0.0.2</version> 
+	<version>0.0.1</version> 
 	
 	<name>maven-web-application</name>
 
@@ -95,13 +95,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>tesla-web-releases Repository</name>
-	      <url>http://172.31.89.145:8081/guconsulting/repository/tesla-fe-release/</url>
+	      <url>http://54.167.182.208:8081/guconsulting/repository/tesla-fe-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>tesla-webapp-snapshots Repository </name>
-	      <url>http://172.31.89.145:8081/guconsulting/repository/tesla-fe-snapshot/</url>
+	      <url>http://54.167.182.208:8081/guconsulting/repository/tesla-fe-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
