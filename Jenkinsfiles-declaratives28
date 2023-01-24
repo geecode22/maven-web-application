@@ -1,0 +1,66 @@
+pipeline{
+  agent any 
+  tools {
+    maven "maven3.8.6"
+  }  
+  stages {
+    stage('1GetCode'){
+      steps{
+        sh "echo 'cloning the latest application version' "
+        git credentialsId: 'git-hub-credentials', url: 'https://github.com/geecode22/maven-web-app'
+      }
+    }
+    stage('3Test+Build'){
+      steps{
+        sh "echo 'running JUnit-test-cases' "
+        sh "echo 'testing must passed to create artifacts ' "
+        sh "mvn clean package"
+      }
+    }
+    stage('4CodeQuality'){
+      steps{
+        sh "echo 'Perfoming CodeQualityAnalysis' "
+        sh "mvn sonar:sonar"
+      }
+    } 
+    stage('5uploadNexus'){
+      steps{
+        sh "mvn deploy"
+      }
+    }  
+    stage('8deploy2prod'){
+      steps{
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://3.95.203.113:8177/')], contextPath: null, war: 'target/*war'
+    }     
+    }
+  }
+  
+  post{
+    always{
+emailext body: '''Hello Guys,
+
+Please check build status.
+
+Thanks
+GU Consulting
++12342342345''', recipientProviders: [buildUser(), developers()], subject: 'Success', to: 'paypayforapp@gmail.com'
+}
+success{emailext body: '''Hello Guys,
+
+Good Job for the build and deployment was successful.
+
+Thanks
+GU Consulting
++12342342345''', recipientProviders: [buildUser(), developers()], subject: 'Success', to: 'paypayforapp@gmail.com'
+}
+failure{
+emailext body: '''Hello Guys,
+
+Build failed woefully. please check and resolve.
+
+Thanks
+GU Consulting
++12342342345''', recipientProviders: [buildUser(), developers()], subject: 'Success', to: 'paypayforapp@gmail.com'
+}
+}
+}
